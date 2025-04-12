@@ -51,7 +51,12 @@ try {
 }
 }
 
-getAccessToken()
+app.get("/moods" , (req,res) => {
+    res.render("moods")
+})
+
+
+
 
 
 
