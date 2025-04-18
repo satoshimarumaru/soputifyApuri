@@ -6,7 +6,7 @@ const mongoose = require("mongoose")
 const ejsMate = require("ejs-mate")
 app.use(express.static('public'));
 const axios = require("axios")  
-
+const Favorite = require("./models/Favorite");
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
@@ -58,7 +58,7 @@ try {
 
 // 検索用ルート
 app.get("/random", async (req, res) => {
-    const genres = ["pop", "rock", "jazz", "classical", "hip-hop", "electronic", "country", "blues", "reggae", "metal"]; // ジャンルリスト
+    const genres = ["pop", "rock", "jazz", "classical", "hip-hop", "electronic", "country", "blues", "reggae", "metal", "soul", "funk", "punk", "indie", "k-pop", "latin", "folk", "disco"]; // ジャンルリスト
     const randomGenre = genres[Math.floor(Math.random() * genres.length)]; 
     const accessToken = await getAccessToken();
     if( !accessToken ) {
@@ -73,11 +73,13 @@ app.get("/random", async (req, res) => {
                     q: `genre:"${randomGenre}"`,
                     type: "track",
                     market: "JP",
-                    limit: 1
+                    limit: 10
                 } 
                 })
-                const randomItems = response.data.tracks.items[0]
-                console.log(response.data.tracks.items[0])
+                const Items = response.data.tracks.items
+                const randomItems = Items[Math.floor(Math.random() * Items.length)]
+                console.log(randomItems)
+                // console.log(response.data.tracks.items[0])
                 res.render("random", {randomItems})
         } catch (error) {
             res.send("エラーが発生しました。")
@@ -106,3 +108,6 @@ console.log("クライアントID:", process.env.CLIENT_ID);
 app.listen(3000,() => {
     console.log("ポート3000で受付中")
 })
+
+
+

@@ -1,5 +1,20 @@
 <%- layout("layouts/boilerplate") %>
-<h1><%= randomItems.artists[0].name %></h1>
-<h1><%= randomItems.name %></h1>
-<h1><a href="<%= randomItems.external_urls.spotify %>" target="_blank"><%= randomItems.name %></a></h1>
-<img src="<%= randomItems.album.images[0].url %>" alt="アルバムジャケット" style="width:300px; height:auto;">
+
+<div class="card shadow-lg mx-auto" style="width: 18rem; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column;">
+    <img src="<%= randomItems.album.images[0].url %>" class="card-img-top" alt="アルバムジャケット">
+    <div class="card-body text-center d-flex flex-column">
+        <h5 class="card-title fw-bold" style="font-size: 1.25rem; color: #333;"><%= randomItems.name %></h5>
+        <p class="card-text text-muted" style="font-size: 1rem;">by <%= randomItems.artists[0].name %></p>
+        <a href="<%= randomItems.external_urls.spotify %>" target="_blank" class="btn btn-success mt-3" style="width: 100%;">Spotifyで聴く</a>
+        <form action="/favorites" method="post" >
+            <input type="hidden" name="trackId" value="<%= randomItems.id %>">
+            <input type="hidden" name="name" value="<%= randomItems.name %>">
+            <input type="hidden" name="artist" value="<%= randomItems.artists[0].name %>">
+            <input type="hidden" name="albumImage" value="<%= randomItems.album.images[0].url %>">
+            <input type="hidden" name="URL" value="<%= randomItems.external_urls.spotify %>">
+            <button type="submit" style="background: none; border: none; ">
+                <i class="fa-regular fa-thumbs-up"></i>
+            </button>
+        </form>
+    </div>
+</div>
