@@ -73,7 +73,7 @@ app.get("/random", async (req, res) => {
                     q: `genre:"${randomGenre}"`,
                     type: "track",
                     market: "JP",
-                    limit: 10
+                    limit: 50
                 } 
                 })
                 const Items = response.data.tracks.items
@@ -85,6 +85,26 @@ app.get("/random", async (req, res) => {
             res.send("エラーが発生しました。")
     }
 }}); 
+
+// お気に入り登録ルート
+app.post("/favorites", async (req, res) => {
+    const { trackId, name, artist, albumImage, URL } = req.body;
+    console.log(req.body)
+    const favorite = new Favorite({
+        trackId,
+        name,
+        artist,
+        albumImage,
+        URL
+    });
+    await favorite.save();
+    res.redirect("/random");
+});
+
+
+
+
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/spotify',{useNewUrlParser:true,useUnifiedTopology:true,})
 .then(() => {
