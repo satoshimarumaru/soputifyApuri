@@ -44,21 +44,45 @@ try {
 
 } catch (error) {
     if (error.response) {
-        console.error('アクセストークンの取得に失敗:', error.response.data);
+        console.error("ステータスコード:", error.response.status);
+        console.error("レスポンスデータ:", error.response.data || "レスポンスデータがありません");
+    } else if (error.request) {
+        console.error("リクエストは送信されたが応答がありません:", error.request);
     } else {
-        console.error('アクセストークンの取得に失敗:', error.message);
+        console.error("エラー詳細:", error.message);
     }
 }
 }
 
-app.get("/moods" , (req,res) => {
-    res.render("moods")
-})
 
 
-
-
-
+// 検索用ルート
+app.get("/random", async (req, res) => {
+    const genres = ["pop", "rock", "jazz", "classical", "hip-hop", "electronic", "country", "blues", "reggae", "metal"]; // ジャンルリスト
+    const randomGenre = genres[Math.floor(Math.random() * genres.length)]; 
+    const accessToken = await getAccessToken();
+    if( !accessToken ) {
+        return res.status(500).send("アクセストークンの取得に失敗しました。");
+    } else {
+        try {
+            const response = await axios.get("https://api.spotify.com/v1/search", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                params: {
+                    q: `genre:"${randomGenre}"`,
+                    type: "track",
+                    market: "JP",
+                    limit: 1
+                } 
+                })
+                const randomItems = response.data.tracks.items[0]
+                console.log(response.data.tracks.items[0])
+                res.render("random", {randomItems})
+        } catch (error) {
+            res.send("エラーが発生しました。")
+    }
+}}); 
 
 mongoose.connect('mongodb://127.0.0.1:27017/spotify',{useNewUrlParser:true,useUnifiedTopology:true,})
 .then(() => {
