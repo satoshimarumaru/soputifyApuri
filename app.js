@@ -10,7 +10,8 @@ const Favorite = require("./models/Favorite");
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
-
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
 
 app.engine("ejs", ejsMate)
 app.set("view engine", "ejs");
@@ -101,6 +102,12 @@ app.post("/favorites", async (req, res) => {
     res.redirect("/random");
 });
 
+// お気に入りの一覧ページの作製
+app.get("/favorites", async (req, res) => {
+    const favorites = await Favorite.find({});
+    console.log(favorites)
+    res.render("favorites", { favorites });
+})
 
 
 

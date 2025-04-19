@@ -1,0 +1,24 @@
+<%- layout("layouts/boilerplate") %>
+<!-- <% for (let favorite of favorites ) { %>
+    <div><%= favorite.name %></div>
+    <div><%= favorite.artist %></div>
+<% } %> -->
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">お気に入り一覧</h1>
+    <div class="row">
+        <% favorites.forEach(favorite => { %>
+            <div class="col-md-2 mb-4"> <!-- 1行に5つ表示するためにcol-md-2を使用 -->
+                <div class="card shadow-sm" style="width: 100%; border-radius: 15px; overflow: hidden;">
+                    <img src="<%= favorite.albumImage %>" class="card-img-top" alt="アルバムジャケット" style="height: 150px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold" style="font-size: 1rem; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= favorite.name %></h5>
+                        <p class="card-text text-muted" style="font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">by <%= favorite.artist %></p>
+                        <a href="<%= favorite.URL %>" target="_blank" class="btn btn-success mt-2" style="width: 100%; font-size: 0.9rem;">Spotifyで聴く</a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
