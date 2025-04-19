@@ -40,18 +40,11 @@ try {
     );
 
     const accessToken = response.data.access_token;
-    console.log('アクセストークン:', accessToken);
     return accessToken;
 
 } catch (error) {
-    if (error.response) {
-        console.error("ステータスコード:", error.response.status);
-        console.error("レスポンスデータ:", error.response.data || "レスポンスデータがありません");
-    } else if (error.request) {
-        console.error("リクエストは送信されたが応答がありません:", error.request);
-    } else {
-        console.error("エラー詳細:", error.message);
-    }
+    console.error('アクセストークンの取得に失敗しました:', error.message);
+    return null;
 }
 }
 
@@ -137,8 +130,14 @@ app.get("/", (req,res) => {
     res.render("home")
 })
 
+app.use((req, res) => {
+    res.status(404).render("404", { message: "ページが見つかりません" });
+});
 
-// console.log("クライアントID:", process.env.CLIENT_ID);
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).render("500", { message: "サーバーエラーが発生しました" });
+});
 
 
 // サーバーの立ち上げ
