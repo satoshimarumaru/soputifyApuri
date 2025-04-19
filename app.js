@@ -109,10 +109,20 @@ app.get("/favorites", async (req, res) => {
     res.render("favorites", { favorites });
 })
 
+// お気に入りの削除ルート作製
+app.delete("/favorites/:id", async (req, res) => {
+    const { id } = req.params;
+    await Favorite.findByIdAndDelete(id);
+    res.redirect("/favorites");
+})
 
 
 
 
+
+
+
+// mongoDBとの接続
 mongoose.connect('mongodb://127.0.0.1:27017/spotify',{useNewUrlParser:true,useUnifiedTopology:true,})
 .then(() => {
     console.log("DBにコネクションOK")
@@ -128,7 +138,7 @@ app.get("/", (req,res) => {
 })
 
 
-console.log("クライアントID:", process.env.CLIENT_ID);
+// console.log("クライアントID:", process.env.CLIENT_ID);
 
 
 // サーバーの立ち上げ
