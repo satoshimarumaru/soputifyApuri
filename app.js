@@ -1,4 +1,6 @@
-require('dotenv').config();
+if(process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
 const express = require("express");
 const app = express();
 const path = require("path")
@@ -111,12 +113,14 @@ app.delete("/favorites/:id", async (req, res) => {
 
 
 
-
+// 'mongodb://127.0.0.1:27017/spotify'
 
 
 
 // mongoDBとの接続
-mongoose.connect('mongodb://127.0.0.1:27017/spotify',{useNewUrlParser:true,useUnifiedTopology:true,})
+
+const dbUrl = process.env.DB_URL 
+mongoose.connect(dbUrl,{useNewUrlParser:true,useUnifiedTopology:true,})
 .then(() => {
     console.log("DBにコネクションOK")
 })
@@ -141,8 +145,9 @@ app.use((err, req, res, next) => {
 
 
 // サーバーの立ち上げ
-app.listen(3000,() => {
-    console.log("ポート3000で受付中")
+const port = process.env.PORT || 3000
+app.listen(port,() => {
+    console.log(`ポート番号${port}でサーバーが立ち上がりました`)
 })
 
 
