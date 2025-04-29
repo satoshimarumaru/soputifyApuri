@@ -8,7 +8,7 @@ const mongoose = require("mongoose")
 const ejsMate = require("ejs-mate")
 app.use(express.static('public'));
 const axios = require("axios")  
-const Favorite = require("./models/Favorite");
+const Favorite = require("./models/favorite");
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
